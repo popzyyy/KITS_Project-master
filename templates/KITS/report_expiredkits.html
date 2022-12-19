@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Reports - All Expired Kits</H2>
+        <hr>
+
+        <p>{{ test }}</p>
+        <form method="get">
+           {{ kit_report_filter.form }}
+            <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        <hr>
+        <table class="table table-striped table-bordered table-hover table-secondary">
+            <thead>
+                <tr class="bg-info">
+                    <th>IRB</th>
+                    <th>Kit Type</th>
+                    <th>Kit Barcode ID</th>
+                    <th>Kit Expiration Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for kitinstance in kits %}
+                <tr>
+                    <td>{{ kitinstance.kit.IRB_number }}</td>
+                    <td>{{ kitinstance.kit.type_name }}</td>
+                    <td>{{ kitinstance.scanner_id }}</td>
+                    <td>{{ kitinstance.expiration_date }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'KITS:export_expiredkits' %}" class="btn btn-success">Export Report</a>
+    </div>
+{% endblock %}
+
+</html>

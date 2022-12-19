@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Reports - Studies with Expired Kits</H2>
+        <hr>
+        <table class="table table-striped table-bordered table-hover table-secondary">
+            <thead>
+                <tr class="bg-info">
+                    <th>IRB</th>
+                    <th>Pet Name</th>
+                    <th>Number of Expired Kits</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for kit in kits %}
+                <tr>
+                    <td>{{ kit.IRB_number__IRB_number}}</td>
+                    <td>{{ kit.IRB_number__pet_name }}</td>
+                    <td>{{ kit.qty }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'KITS:export_studieswithexpiredkits' %}" class="btn btn-success">Export Report</a>
+    </div>
+{% endblock %}
+
+</html>

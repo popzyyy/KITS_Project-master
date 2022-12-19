@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Study {{ study.IRB_number }} "{{ study.pet_name }}" - All Kits</H2>
+        <hr>
+
+        <table class="table table-striped table-bordered table-hover table-secondary">
+            <thead>
+            <tr class="bg-info">
+                <th>Kit Type</th>
+                <th>Scanner ID</th>
+                <th>Expiration Date</th>
+                <th>Status</th>
+                <th>Location</th>
+            </tr>
+            </thead>
+
+            <tbody>
+                {% for kit in kits %}
+                <tr>
+                    <td>{{ kit.kit.type_name }}</td>
+                    <td>{{ kit.scanner_id }}</td>
+                    <td>{{ kit.expiration_date }}</td>
+                    <td>{% if kit.status == 'a'%}
+
+                            {% if kit.expired_soon == True %}
+                                <p style="color:darkorange;">Expiring Soon</p>
+                            {% else %}
+                                <p>Available</p>
+                            {% endif %}
+                        {% elif kit.status == 'e' %}
+                            <p>Expired</p>
+                        {% endif %}</td>
+                    <td>{{ kit.location }}</td>
+
+                </tbody>
+                {% endfor %}
+            </table>
+
+    </div>
+
+{% endblock %}
+
+</html>

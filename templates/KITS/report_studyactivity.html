@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+
+{% block content %}
+    <style>
+    .column1 {
+        float: left;
+        margin: 8px;
+        width: 33%;
+    }
+
+    .column2 {
+        float: left;
+        margin: 0;
+        width: 64%;
+    }
+
+/* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid">
+        <H2>Reports - Study Activity</H2>
+        <hr>
+
+        <form method="POST">
+        {% csrf_token %}
+        <h6>Filter by date range: MM-DD-YYYY</h6>
+        <span>From: </span><input type="text" name="startdate">
+        <span>To: </span><input type="text" name="enddate">
+
+        <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        <hr>
+        <p> Study Activity from {{ startdate }} to {{ enddate }}</p>
+        <hr>
+
+
+
+        <div class="row">
+            <div class="column1">
+
+                        <table class="table table-striped table-bordered table-secondary">
+                            <thead>
+                                <tr class="bg-info">
+                                    <th>Overall Study Activity</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in table_data %}
+                                <tr>
+                                    <td>{{ d.0 }}</td>
+                                    <td>{{ d.1 }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+            </div>
+
+
+            <div class="column2">
+                {{ graph|safe }}
+            </div>
+        </div>
+{% endblock %}
+
+</html>

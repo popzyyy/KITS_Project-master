@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+
+{% block content %}
+    <style>
+    .column12 {
+        float: left;
+        margin: 8px;
+        width: 25%;
+    }
+
+    .column3 {
+        float: left;
+        margin: 0;
+        width: 46%;
+    }
+
+/* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid">
+        <H2>Reports - Kit Activity</H2>
+        <hr>
+
+        <form method="POST">
+        {% csrf_token %}
+        <h6>Filter by date range: MM-DD-YYYY</h6>
+        <span>From: </span><input type="text" name="startdate">
+        <span>To: </span><input type="text" name="enddate">
+
+        <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        <hr>
+        <p> Kit Activity from {{ startdate }} to {{ enddate }}</p>
+        <hr>
+
+        <div class="row">
+            <div class="column12" style="margin-left: 12px;">
+                <h3>Most kits checked out</h3>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>IRB</th>
+                            <th>Name</th>
+                            <th>Kits Checked Out</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for study in active_studies %}
+                            <tr>
+                                {% for s in study %}
+                                <td>{{ s }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column12">
+                <h3>Most kits demolished</h3>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>IRB</th>
+                            <th>Name</th>
+                            <th>Kits Demolished</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for study in not_active_studies %}
+                        <tr>
+                            {% for s in study %}
+                            <td>{{ s }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column3" style="background-color:white;">
+                {{ graph|safe }}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Adding a "{{ kit_instance.type_name }}" kit for IRB Number: {{ kit_instance.IRB_number }}</H2>
+        <hr>
+        
+        <form method="POST" class="kitinstance-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Add</button>
+        </form>
+    </div>
+{% endblock %}
+
+</html>

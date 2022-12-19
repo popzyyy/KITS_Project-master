@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+    {% if request.user.is_staff %}
+    <style>
+    .column12 {
+        float: left;
+        margin: 8px;
+        width: 35%;
+    }
+
+    .column3 {
+        float: left;
+        margin: 0;
+        width: 27%;
+    }
+
+/* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    </style>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid">
+        <H2>Reports - User Study Activity For: {{ user }}</H2>
+        <hr>
+
+        <form method="POST">
+        {% csrf_token %}
+        <h6>Filter by date range (MM-DD-YYYY):</h6>
+        <span>From: </span><input type="text" name="startdate">
+        <span>To: </span><input type="text" name="enddate">
+
+        <button class="btn btn-primary" type="submit">Search</button>
+        </form>
+
+        <hr>
+        <p> Studies Created, Changed, and Deleted From {{ startdate }} To {{ enddate }}</p>
+        <hr>
+
+        <div class="row">
+            <div class="column12" style="margin-left: 12px;">
+                <h3>Studies Created</h3>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>#</th>
+                            <th>IRB</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for instances in queryset %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instances.IRB_number }}</td>
+                                 <td>{{ instances.pet_name }}</td>
+                             </tr>
+                         {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column12">
+                <h3>Studies Changed</h3>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>#</th>
+                            <th>IRB</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       {% for instances in queryset_changed %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instances.IRB_number }}</td>
+                                 <td>{{ instances.pet_name }}</td>
+                             </tr>
+                         {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column3" style="background-color:white;">
+                                <h3>Studies Deleted</h3>
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>#</th>
+                            <th>IRB</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       {% for instances in queryset_deleted %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ instances.IRB_number }}</td>
+                                 <td>{{ instances.pet_name }}</td>
+                             </tr>
+                         {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+               <a href="{% url 'KITS:export_user' pk=user.pk%}" class="btn btn-success">Export Report</a>
+    </div>
+    {% endif %}
+    {% if not request.user.is_staff %}
+        <p>Not authorized to access this page.</p>
+    {% endif %}
+{% endblock %}
+</html>

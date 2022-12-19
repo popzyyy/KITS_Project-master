@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+    <style>
+
+        .column12 {
+            float: left;
+            margin: 4px;
+            width: 30%;
+        }
+
+        .column3 {
+            float: right;
+            margin: 0;
+            width: 36%;
+        }
+
+    /* Clear floats after the columns */
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+    </style>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container-fluid">
+        <H2>Reports - Storage Summary</H2>
+        <hr>
+
+        <div class="row">
+            <div class="column12">
+                <p><b>KITS IN STUDIES THAT ARE PREPARING TO OPEN</b></p>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>Location</th>
+                            <th>Study</th>
+                            <th>Kit Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for kit in table1 %}
+                        <tr>
+                            <td>{{ kit.0 }}</td>
+                            <td>{% for k in kit.1 %} {{ k }} <br>{% endfor %}</td>
+                            <td>{% for k in kit.2 %}{{ k }} <br>{% endfor %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column12">
+                <p><b>KITS IN STUDIES THAT ARE CLOSED</b></p>
+
+                <table class="table table-striped table-bordered table-hover table-secondary">
+                    <thead>
+                        <tr class="bg-info">
+                            <th>Location</th>
+                            <th>Study</th>
+                            <th>Kit Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for kit in table2 %}
+                        <tr>
+                            <td>{{ kit.0 }}</td>
+                            <td>{% for k in kit.1 %} {{ k }} <br>{% endfor %}</td>
+                            <td>{% for k in kit.2 %}{{ k }} <br>{% endfor %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="column3">
+                <p><b>OVERVIEW OF KITS IN INVENTORY</b></p>
+                <p>{{ graph|safe }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+</html>

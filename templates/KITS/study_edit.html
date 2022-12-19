@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends 'KITS/base.html' %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <h2>Study {{ study.IRB_number }}: Edit Study</h2>
+            <hr>
+
+        <form method="POST" class="">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-success">Update</button>
+        </form>
+    </div>
+{% endblock %}
+
+</html>

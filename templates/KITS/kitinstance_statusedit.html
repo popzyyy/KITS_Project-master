@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends 'KITS/base.html' %}
+
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Kit: {{ kitinstance.kit_id }}</H2>
+        <hr>
+
+        <p><b>Kit Instance ID: </b>{{ kitinstance.id}}</p>
+        <p><b>Scanner ID: </b>{{ kitinstance.scanner_id}}</p>
+        <p><b>Note: </b>{{ kitinstance.note }}</p>
+        <p><b>Expiration Date </b>{{ kitinstance.expiration_date }}</p>
+        <p><b>Location ID: </b>{{ kitinstance.location_id }}</p>
+        <p><b>Current Status:</b>
+                                  {% if kitinstance.status == 'a' %}
+                                     Available
+                                  {% elif kitinstance.status == 'c' %}
+                                    Checked Out
+                                  {% elif kitinstance.status == 'd' %}
+                                    Demolished
+                                  {% elif kitinstance.status == 'e' %}
+                                    Expired
+                                  {% endif %}</p>
+
+        <p><b style="font-size: 1.2em;">Please confirm all details before checking this Kit out.</b></p>
+
+     <form method="POST" class="">{% csrf_token %}
+        {{ form.as_p }}
+            <button type="submit" class="save btn btn-success">Check Out</button>
+    </form>
+    </div>
+
+{% endblock %}
+</html>

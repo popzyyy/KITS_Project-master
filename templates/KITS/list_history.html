@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Kit Instance History</H2>
+
+        <hr>
+        <div class="d-flex">
+            <h5>Action Key:</h5>
+            <h5 class="ms-5">+ = Created</h5>
+            <h5 class="ms-5">~ = Changed</h5>
+        </div>
+        <hr>
+
+        <table class="table table-striped table-bordered table-hover table-secondary">
+            <thead>
+            <tr class="bg-info">
+                <th>#</th>
+                <th>Instance ID</th>
+                <th>Barcode ID</th>
+                <th>Status</th>
+                <th>Expires</th>
+                <th>User ID</th>
+                <th>Action</th>
+                <th>Date/Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for instances in queryset %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ instances.id }}</td>
+                <td>{{ instances.scanner_id }}</td>
+                <td>
+                    {% if instances.status == 'a' %}
+                        <p><b style="color:darkgreen">Available</b></p>
+                    {% elif instances.status == 'c' %}
+                        <p><b style="color:cadetblue">Checked-Out</b></p>
+                    {% elif instances.status == 'd' %}
+                         <p><b style="color:black">Demolished</b></p>
+                    {% elif instances.status == 'e' %}
+                        <p><b style="color:darkred">Expired</b></p>
+                    {% endif %}
+                </td>
+                <td>{{ instances.expiration_date }}</td>
+                <td>{{ instances.history_user_id }}</td>
+                <td>{{ instances.history_type }}</td>
+                <td>{{ instances.history_date }}</td>
+
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+</html>
+

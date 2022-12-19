@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+
+    <div class="container-fluid">
+        <H2>Reports</H2>
+        <hr>
+
+        <div class="container">
+            <H5>Expired Kits</H5>
+
+            <a href="{%  url 'KITS:report_expiredkits' %}" class="btn btn-success">List of all expired kits</a>
+            <a href="{%  url 'KITS:report_expiredkits_studies' %}" class="btn btn-success">List of studies with expired kits</a>
+            <a href="{%  url 'KITS:report_activestudies' %}" class="btn btn-success">Active and Less Active Studies</a>
+            <a href="{%  url 'KITS:user_list' %}" class="btn btn-success">User and Studies</a>
+        </div>
+    </div>
+{% endblock %}
+
+</html>

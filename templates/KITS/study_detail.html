@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends 'KITS/base.html' %}
+{% block content %}
+    <div class="container-fluid">
+        <H2>Study: {{ study }} "{{ study.pet_name }}"</H2>
+        <hr>
+
+        <p><b>Status: </b>{{ study.status }}</p>
+        <p><b>Sponsor: </b>{{ study.sponsor_name }}</p>
+
+        {% if study.comment == ''%}
+            <p><b>Notes:</b> <em>No additional notes were added.</em></p>
+        {% else %}
+            <p><b>Notes:</b> {{ study.comment }}</p>
+
+        {% endif %}
+        <a class="btn-sm btn-warning" href="{% url 'KITS:study_detail_study_edit' pk=study.pk %}">Edit Study Details</a>
+
+        <hr>
+        {% if kit_exist == 'False' %}
+
+            <p>
+                <b>Kits: </b>
+                No kits have been added to this study. To add kits, visit the <a href="{% url 'KITS:kit_list' %}">Check-In Kits</a> page.
+            </p>
+
+        {% else %}
+
+            <table class="table table-striped table-bordered table-hover table-secondary">
+                <thead>
+                <tr class="bg-info">
+                    <th>Kit Name</th>
+                    <th>Available Kits</th>
+                    <th>Expired Kits</th>
+                    <th>Kit last to expire</th>
+                    <th>Requisition</th>
+                    <th>Additional notes</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for kit in kits %}
+                    <tr>
+                        <td>{{ kit.type_name }}</td>
+                        <td>{{ kit.no_of_kits }}</td>
+                        <td>{{ kit.no_of_kits_exp }}</td>
+                        <td>{{ kit.exp }}</td>
+                        <td>{{ new_req.description }}</td>
+                        <td>{{ kit.description }}</td>
+                        <td><a href="{% url 'KITS:kit_edit_from_study' pk=kit.pk %}" class="btn-sm btn-warning">Edit</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{% url 'KITS:study_detail_seeallkits' pk=study.pk %}" class="btn btn-primary">See All Kits</a>
+            <span class="float-end">To add more kits, visit the <a href="{% url 'KITS:kit_list' %}">
+                Check-In Kits</a> page.</span>
+
+        {% endif %}
+
+        <hr>
+
+        <div class="row">
+            <div class="col">
+            {% if study.status == 'Closed' %}
+                <p>Kit order details cannot be accessed as the study is now closed.</p>
+
+            {% elif not kit_order_exist %}
+                <p>{{ kit_order }}</p>
+                <a href="{% url 'KITS:kit_ordering_add' pk=study.pk %}" class="btn-sm btn-success">Add</a>
+
+            {% else %}
+                <h3 id="kit_order_info">Kit Ordering Info</h3>
+
+                    {% if study.kitorder.description != '' %}
+                        <p><b>Description:</b> {{ study.kitorder.description }}</p>
+                    {% endif %}
+
+                    <p>
+                        {% if study.kitorder.type == 'file' and study.kitorder.file %}
+                            <a class="btn-sm btn-success" href="{{ MEDIA_URL }}{{ kit_order }}" download>Download File</a>
+                        {% elif study.kitorder.type == 'link' and study.kitorder.link != '' %}
+                            <a class="btn-sm btn-success" href="{{ kit_order }}" target="_blank">Visit URL</a>
+                        {% endif %}
+
+                        <a href="{% url 'KITS:kit_ordering' pk=study.pk %}" class="btn-sm btn-warning">Edit</a>
+                    </p>
+            {% endif %}
+            </div>
+
+            <div class="col">
+            {% if study.status == 'Closed' %}
+                <p>Requisition details cannot be accessed as the study is now closed.</p>
+
+            {% elif not req_exist %}
+                <p>{{ req }}</p>
+                <a href="{% url 'KITS:create_req' pk=study.pk %}" class="btn-sm btn-success">Add</a>
+
+            {% else %}
+                <h3>Requisition Info</h3>
+
+                    {% if study.requisition.description != '' %}
+                        <p><b>Description:</b> {{ study.requisition.description }}</p>
+                    {% endif %}
+
+                    <p>
+                        {% if study.requisition.type == 'file' and study.requisition.file %}
+                            <a class="btn-sm btn-success" href="{{ MEDIA_URL }}{{ req }}" download>Download File</a>
+                        {% elif study.requisition.type == 'link' and study.requisition.link != '' %}
+                            <a class="btn-sm btn-success" href="{{ req }}" target="_blank">Visit URL</a>
+                        {% endif %}
+
+                        <a href="{% url 'KITS:req_edit' pk=study.pk %}" class="btn-sm btn-warning">Edit</a>
+                    </p>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</html>

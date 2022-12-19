@@ -1,0 +1,11 @@
+# Not required (or desired) for deployment
+*.pyc
+*.csv
+venv
+__pycache__
+local_settings.py
+.idea
+db.sqlite3
+migrations/*
+!migrations/__init__.py
+uploads/*

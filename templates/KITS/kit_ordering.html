@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends 'KITS/base.html' %}
+
+{% block content %}
+
+    <div class="container-fluid">
+
+    <H2>Add Kit Ordering Information</H2>
+    <hr>
+
+    <form method="POST" class="" enctype="multipart/form-data">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-success">Update</button>
+    </form>
+    </div>
+
+{% endblock %}
+</html>
